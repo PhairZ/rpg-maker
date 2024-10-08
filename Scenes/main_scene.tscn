@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=4 uid="uid://cnlkqqgetfqiq"]
+[gd_scene load_steps=12 format=4 uid="uid://cnlkqqgetfqiq"]
 
+[ext_resource type="Script" path="res://Scenes/main_scene.gd" id="1_8ly2h"]
 [ext_resource type="PackedScene" uid="uid://dicqp66vrehg6" path="res://Scenes/player.tscn" id="1_xwfuu"]
 [ext_resource type="Texture2D" uid="uid://jtt36orqv58p" path="res://sprites/tilesets/plains.png" id="2_qbgbb"]
 [ext_resource type="Texture2D" uid="uid://dvmga0jfvinlo" path="res://sprites/objects/objects.png" id="3_42wvi"]
 [ext_resource type="Texture2D" uid="uid://drce2omuxp2t5" path="res://sprites/tilesets/grass.png" id="3_j2yjs"]
+[ext_resource type="Texture2D" uid="uid://d0ubw0d031xtq" path="res://sprites/objects/chest_01.png" id="4_f66dn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f8m4m"]
 texture = ExtResource("2_qbgbb")
@@ -396,6 +398,18 @@ texture = ExtResource("3_42wvi")
 10:0/0 = 0
 10:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbegq"]
+texture = ExtResource("4_f66dn")
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 1.0
+0:0/animation_frame_2/duration = 1.0
+0:0/animation_frame_3/duration = 1.0
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:0/0/custom_data_0 = true
+0:0/0/custom_data_1 = "I'm just a Chest"
+0:0/0/custom_data_2 = "Chest"
+
 [sub_resource type="TileSet" id="TileSet_xl3rc"]
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
@@ -404,12 +418,21 @@ terrain_set_0/terrain_0/name = "Grass Path"
 terrain_set_0/terrain_0/color = Color(0.26712, 0.433998, 0.240609, 1)
 terrain_set_0/terrain_1/name = "Hill"
 terrain_set_0/terrain_1/color = Color(0.537678, 0.420941, 0.223665, 1)
+custom_data_layer_0/name = "interactable"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "dialogue"
+custom_data_layer_1/type = 4
+custom_data_layer_2/name = "speaker"
+custom_data_layer_2/type = 4
 sources/0 = SubResource("TileSetAtlasSource_f8m4m")
 sources/1 = SubResource("TileSetAtlasSource_skbg7")
 sources/2 = SubResource("TileSetAtlasSource_nrmjl")
+sources/3 = SubResource("TileSetAtlasSource_lbegq")
 
 [node name="MainScene" type="Node2D"]
+process_mode = 3
 y_sort_enabled = true
+script = ExtResource("1_8ly2h")
 
 [node name="Node2D" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -427,9 +450,9 @@ tile_set = SubResource("TileSet_xl3rc")
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="Node2D"]
 y_sort_enabled = true
-tile_map_data = PackedByteArray("AADz/wEAAgAIAAYAAAD3/wEAAgAIAAYAAADv//j/AgAAAAUAAADv//n/AgAAAAUAAAAMAAEAAgAAAAUAAAAOAAgAAgAAAAUAAAALAA4AAgAAAAUAAADz/w0AAgAAAAUAAAD0/wQAAgAAAAUAAAD0//D/AgAAAAUAAADy//L/AgAAAAEAAAD2//H/AgAAAAEAAADz//X/AgAAAAEAAAAPAPP/AgAAAAEAAAAFAPj/AgAAAAEAAAAKAPD/AgAAAAEAAAD+//P/AgAAAAEAAADy/wEAAgAAAAEAAAAKAAIAAgAAAAEAAAALAAMAAgAAAAEAAAAPAP//AgAAAAEAAAD5/woAAgAKAAcAAAD9/wAAAgAKAAcAAAAKAPf/AgAKAAcAAAANAPL/AgAKAAcAAAAGAPf/AgAFAAAAAAALAPD/AgAFAAAAAAAPAPL/AgAFAAAAAADx//H/AgAFAAAAAADz//7/AgAFAAAAAAD1/wQAAgAFAAAAAAAKAAsAAgAKAAcAAAAHAA4AAgAAAAEAAAAJAAcAAgAAAAEAAAANAAwAAgAAAAEAAAALAA0AAgAFAAAAAAAPAAYAAgAFAAAAAAACAAAAAgAAAAAAAAADAAEAAgALAAIAAAAOAPP/AgAAAAAAAAAJAPv/AgAGAAcAAAADAPT/AgAGAAcAAAADAAwAAgAGAAcAAAD8//r/AgAIAAYAAAA=")
+tile_map_data = PackedByteArray("AADz/wEAAgAIAAYAAAD3/wEAAgAIAAYAAADv//j/AgAAAAUAAADv//n/AgAAAAUAAAAMAAEAAgAAAAUAAAAOAAgAAgAAAAUAAAALAA4AAgAAAAUAAADz/w0AAgAAAAUAAAD0/wQAAgAAAAUAAAD0//D/AgAAAAUAAADy//L/AgAAAAEAAAD2//H/AgAAAAEAAADz//X/AgAAAAEAAAAPAPP/AgAAAAEAAAAFAPj/AgAAAAEAAAAKAPD/AgAAAAEAAAD+//P/AgAAAAEAAADy/wEAAgAAAAEAAAAKAAIAAgAAAAEAAAALAAMAAgAAAAEAAAAPAP//AgAAAAEAAAD5/woAAgAKAAcAAAD9/wAAAgAKAAcAAAAKAPf/AgAKAAcAAAANAPL/AgAKAAcAAAAGAPf/AgAFAAAAAAALAPD/AgAFAAAAAAAPAPL/AgAFAAAAAADx//H/AgAFAAAAAADz//7/AgAFAAAAAAD1/wQAAgAFAAAAAAAKAAsAAgAKAAcAAAAHAA4AAgAAAAEAAAAJAAcAAgAAAAEAAAANAAwAAgAAAAEAAAALAA0AAgAFAAAAAAAPAAYAAgAFAAAAAAACAAAAAgAAAAAAAAADAAEAAgALAAIAAAAOAPP/AgAAAAAAAAAJAPv/AgAGAAcAAAADAPT/AgAGAAcAAAADAAwAAgAGAAcAAAD8//r/AgAIAAYAAAAEAAAAAwAAAAAAAAA=")
 tile_set = SubResource("TileSet_xl3rc")
 
 [node name="RPGController" parent="." instance=ExtResource("1_xwfuu")]
 y_sort_enabled = true
-position = Vector2(0, 0)
+position = Vector2(64, 16)

@@ -24,12 +24,14 @@ extends Node2D
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var ray_cast: RayCast2D = $RayCast2D
+@onready var interactive_tile_map: TileMapLayer = $"../Node2D/TileMapLayer3"
 
 const GRID  := 16
 const BUFFER_TIME := 8
 
-var curr_anim := 0
+var dir := Vector2.DOWN
 var target_pos: Vector2
+var curr_anim := 0
 var move_buffer_x := 0
 var move_buffer_y := 0
 var move_buffer_x_time := 0
@@ -41,13 +43,24 @@ func _ready() -> void:
 	target_pos = global_position
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
+	
+	if event.is_action_pressed("Interact") and GUI.dialogue_state == GUI.DialogueState.DIALOGUE_STOPPED:
+		var cell_pos := interactive_tile_map.local_to_map(position+dir)
+		var data := interactive_tile_map.get_cell_tile_data(cell_pos)
+		if is_curr_pos_valid() and data and data.get_custom_data("interactable"):
+			GUI.play_dialogue(data.get_custom_data("dialogue"), data.get_custom_data("speaker"))
+			update_anim(Vector2.ZERO)
+			
+	
 	if event is InputEventKey and event.keycode == KEY_R:
 		get_tree().reload_current_scene()
 
 
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
+	
 	var move_x := sign(Input.get_axis("Left", "Right"))
 	var move_y := sign(Input.get_axis("Up", "Down"))
 	
@@ -71,17 +84,19 @@ func _physics_process(_delta: float) -> void:
 		elif move_y:
 			target_pos = (global_position/GRID + Vector2(0, move_y)) * GRID
 	
-	var dir = target_pos - global_position
+	if is_curr_pos_valid() and target_pos != global_position:
+		dir = target_pos - global_position
 	validate_move()
 	
 	var prev_pos = global_position
 	var speed = base_speed
 	if Input.is_action_pressed("Sprint"):
 		speed = sprint_speed
+	
 	global_position = round(position.move_toward(target_pos, speed))
 	var vel = global_position - prev_pos
 	
-	update_anim(dir, vel)
+	update_anim(vel)
 
 
 func is_curr_pos_valid(x:= true, y:= true) -> bool:
@@ -101,7 +116,7 @@ func validate_move() -> void:
 		target_pos = position
 
 
-func update_anim(dir: Vector2, velocity: Vector2) -> void:
+func update_anim(velocity: Vector2) -> void:
 	if dir.x:
 		sprite.flip_h = dir.x < 0
 		curr_anim = 4

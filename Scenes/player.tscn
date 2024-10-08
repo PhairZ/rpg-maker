@@ -289,6 +289,7 @@ animations = [{
 }]
 
 [node name="RPGController" type="Node2D"]
+process_mode = 1
 position = Vector2(-16, 0)
 script = ExtResource("1_pa3ot")
 animation_sprite_frames = SubResource("SpriteFrames_52r0c")
@@ -297,6 +298,7 @@ animation_sprite_frames = SubResource("SpriteFrames_52r0c")
 target_position = Vector2(0, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+process_mode = 3
 sprite_frames = SubResource("SpriteFrames_52r0c")
 animation = &"Idle Down"
 autoplay = "Idle Down"
@@ -304,4 +306,3 @@ offset = Vector2(0, -8)
 flip_h = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
