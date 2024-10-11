@@ -22,6 +22,8 @@ func _input(event: InputEvent) -> void:
 
 
 func play_dialogue(content: String, speaker:= "") -> void:
+	if not content: return
+	
 	dialogue_state = DialogueState.DIALOGUE_PLAYING
 	get_tree().paused = true
 	if speaker:
@@ -29,7 +31,7 @@ func play_dialogue(content: String, speaker:= "") -> void:
 		$DialogueBox/Speaker/Label.text = speaker
 	
 	$DialogueBox/TextBox.show()
-	var text_box := $DialogueBox/TextBox/Label
+	var text_box := $DialogueBox/TextBox/MarginContainer/Label
 	text_box.text = ""
 	for character in content:
 		text_box.text += character

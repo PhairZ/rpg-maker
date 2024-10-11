@@ -15,6 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Speaker" type="Panel" parent="DialogueBox"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -43,6 +44,7 @@ vertical_alignment = 1
 clip_text = true
 
 [node name="TextBox" type="Panel" parent="DialogueBox"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
